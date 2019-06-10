@@ -1,0 +1,175 @@
+<div class="container-fluid query-set">
+  <div class="card mt-2">
+    <div class="card-body">
+      <div class="form-group">
+        <label for="FastaRaw">Fasta Content:</label>
+        <div>
+          <textarea class="form-control" id="FastaRaw" name="FastaRaw" [(ngModel)]="fastaRaw" required rows="2">
+          </textarea>
+        </div>
+      </div>
+      <h4 class="text-muted">
+        OR.
+      </h4>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="label-fasta-input">Fasta Input:</span>
+          </div>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" aria-label="fasta-input" aria-describedby="label-fasta-input" (change)="handleFile($event)" required>
+            <label class="custom-file-label" for="label-fasta-input">{{fileName||'Select File'}}</label>
+          </div>
+
+        </div>
+        <div *ngIf="fasta|async; let fasta">
+          <small id="peptide-summary-rows" class="form-text text-muted">
+            {{fasta.content.length}} peptides have been loaded.
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-9"></div>
+        <div class="col-3 text-right">
+          <button class="btn btn-primary" (click)="processFastaContent()">
+            Process Input
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-queryset-parameter-form (queryForm)="applyModification($event)" [rt]="rt" #queryForm></app-queryset-parameter-form>
+</div>
+
+<ng-template #loading>
+  <h6 class="card-subtitle mb-2 text-muted">Loading <i class="fa fa-circle-o-notch fa-spin"></i></h6>
+</ng-template>
+
+<ng-template #emptySelection>
+  <div class="form-group col-md-4">
+    <label for="staticModsEmpty">Selected Static mods:</label>
+    <select multiple class="form-control" id="staticModsEmpty">
+      <option>None</option>
+    </select>
+  </div>
+</ng-template>
+
+<ng-template #trypticDigest let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Protein Input</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="pagination-control text-left col-8">
+          <pagination-controls id="inputFasta" (pageChange)="page = $event"></pagination-controls>
+        </div>
+        <div class="col-4 text-right" *ngIf="digestRules|async; let digestRules">
+          <div class="input-group">
+            <select class="custom-select" id="batchDigestRules" [(ngModel)]="batchDigestRule">
+              <option *ngFor="let d of digestRules" [ngValue]="d">
+                {{d.name}}
+              </option>
+            </select>
+            <span class="input-group-append">
+              <button type="button" class="btn btn-danger" (click)="digestAllSelected(fastaContent)">Digest Selected</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="list-group input-list">
+        <li class="list-group-item list-group-item-secondary">
+          <div class="row">
+            <div class="col-1">
+              <input type="checkbox" (click)="changeAllBox()" [(ngModel)]="currentAllBoxes">
+            </div>
+            <div class="col-2">
+              <p>
+                Sequence Name
+              </p>
+            </div>
+            <div class="col-6">
+              <p>
+                Sequence
+              </p>
+            </div>
+            <div class="col-3">
+              Tryptic Digestion
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item list-group-item{{colorMap.get(digestMap[f.unique_id].accept)}} list-group-item-action sequence" *ngFor="let f of fastaContent.content  | paginate: {id: 'inputFasta', itemsPerPage: 5, currentPage: page}">
+          <div class="row">
+            <div class="col-1">
+              <input type="checkbox" [(ngModel)]="digestMap[f.unique_id].accept" (change)="changeAccept(f.unique_id)">
+            </div>
+            <div class="col-2">
+              <p>
+                {{f.id}}
+              </p>
+            </div>
+            <div class="col-6">
+              <p>
+                {{f.sequence}}
+              </p>
+            </div>
+            <div class="col-3">
+              <div *ngIf="digestRules|async; let digestRules">
+                <div>
+                  <div class="input-group-sm">
+                    <input type="text" class="form-control" placeholder="Fixed-miscleaved sites" [(ngModel)]="digestMap[f.unique_id].misCleave">
+                  </div>
+                </div>
+
+                <div class="input-group mt-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Auto miscleavages</span>
+                  </div>
+                  <div class="input-group-append">
+                    <div class="input-group-text">
+                      <input [(ngModel)]="digestMap[f.unique_id].autoCleave" type="checkbox">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="input-group mt-2">
+                  <select class="custom-select" id="digestRules" [(ngModel)]="digestMap[f.unique_id].rules">
+                    <option *ngFor="let d of digestRules" [ngValue]="d">
+                      {{d.name}}
+                    </option>
+                  </select>
+                  <span class="input-group-append">
+                    <button type="button" class="btn btn-danger" (click)="digest(f)">Digest</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="col-5">
+      <div class="input-group">
+        <select class="custom-select" id="filterRegex" [(ngModel)]="filterChoice">
+          <option *ngFor="let f of regexFilter" [ngValue]="f">{{f.name}}</option>
+        </select>
+        <span class="input-group-append">
+        <button type="button" class="btn btn-sm btn-danger" (click)="filterSeq()">Filter Selected</button>
+      </span>
+      </div>
+    </div>
+    <div class="col-7 text-right">
+      <button type="button" class="btn btn-warning mr-2" (click)="fetchUniprot()">Fetch Uniprot Sequence</button>
+      <button type="button" class="btn btn-secondary mr-2" (click)="exportFasta()">Export Fasta File</button>
+      <button type="button" class="btn btn-primary" (click)="acceptContent()">Accept <span class="badge badge-light">{{acceptTrack}}</span></button>
+    </div>
+
+  </div>
+</ng-template>

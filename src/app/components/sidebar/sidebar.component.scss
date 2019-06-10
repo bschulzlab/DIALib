@@ -1,0 +1,40 @@
+.nav-link:hover {
+  background-color: blue;
+  color: white;
+}
+
+.query-list{
+
+}
+
+.total-card{
+  max-height: 20px;
+}
+
+.sequence-list{
+  max-height: calc(66vh);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+
+.side-footer {
+  height: 80px;
+  position: relative;
+  width: 100%;
+  bottom: 0;
+  list-style-type: none;
+  //opacity: 0.5;
+  //padding-bottom:5.5em;
+}
+
+/*.side-footer:hover {
+  opacity: 1;
+}*/
+
+@media screen and (max-height: 600px) {
+  .sequence-list {
+    max-height: calc(66vh - 80px);
+  }
+}

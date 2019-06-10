@@ -1,0 +1,8 @@
+<div *ngIf="querySub|async; let query" class="query-viewer">
+  <div *ngIf="query">
+    <app-sequence-selector *ngFor="let q of query" [query]="q"></app-sequence-selector>
+  </div>
+
+</div>
+
+

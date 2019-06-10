@@ -1,0 +1,153 @@
+<div>
+  <form class="mt-4" [formGroup]="form">
+    <div class="form-group">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            Queryset Input Settings
+          </h5>
+          <div class="row mt-4">
+            <div class="col-4">
+              <label for="staticMGen" [ngbTooltip]="StaticMod">Static Modifications <i class="fa fa-question-circle text-primary"></i></label>
+              <select multiple class="form-control" id="staticMGen" *ngIf="staticMods|async; let Mods" formControlName="static">
+                <option *ngFor="let m of Mods" [value]="m">
+                  {{m.name}} ({{rounding(m.mass)}} Da)
+                </option>
+              </select>
+            </div>
+            <div class="col-4">
+              <label for="variableMGen" [ngbTooltip]="NonYMod">Non-Ytype Variable Modifications <i class="fa fa-question-circle text-primary"></i></label>
+              <select multiple class="form-control" id="variableMGen" *ngIf="variableMods|async; let Mods" formControlName="variable">
+                <option *ngFor="let m of Mods" [value]="m">
+                  {{m.name}} ({{rounding(m.mass)}} Da)
+                </option>
+              </select>
+            </div>
+            <div class="col-4">
+              <label for="yMGen" [ngbTooltip]="YMod">Ytype Variable Modifications <i class="fa fa-question-circle text-primary"></i></label>
+              <select multiple class="form-control" id="yMGen" *ngIf="Ymods|async; let Mods" formControlName="ytype">
+                <option *ngFor="let m of Mods" [value]="m">
+                  {{m.name}} ({{m.Ytype}}) ({{rounding(m.mass)}} Da)
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-2">
+              <label for="rt" [ngbTooltip]="Retention">Retention Time <i class="fa fa-question-circle text-primary"></i></label>
+              <select multiple class="form-control" id="rt" formControlName="rt">
+                <option *ngFor="let r of rt" [value]="r">
+                  {{r}}
+                </option>
+              </select>
+            </div>
+            <div class="col-4">
+              <label for="windows" [ngbTooltip]="SWATHW">SWATH Windows <i class="fa fa-question-circle text-primary"></i></label>
+              <select multiple class="form-control" id="windows" formControlName="windows" *ngIf="windows|async; let windows">
+                <option *ngFor="let w of windows" [value]="w">
+                  {{w.start}} - {{w.stop}}
+                </option>
+              </select>
+            </div>
+            <div class="col-2">
+              <label for="extra-mass">Extra Mass </label>
+              <input type="number" class="form-control" id="extra-mass" formControlName="extra-mass">
+            </div>
+            <div class="col-2">
+              <label for="max-charge" [ngbTooltip]="MaxCharge">Max Charge <i class="fa fa-question-circle text-primary"></i></label>
+              <input type="number" class="form-control" id="max-charge" formControlName="max-charge">
+            </div>
+            <div class="col-2">
+              <label for="precursor-charge" [ngbTooltip]="PrecursorCharge">Precursor Charge <i class="fa fa-question-circle text-primary"></i></label>
+              <input type="number" class="form-control" id="precursor-charge" formControlName="precursor-charge">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-4">
+              <label for="oxonium" [ngbTooltip]="Oxonium">Oxonium Ions <i class="fa fa-question-circle text-primary"></i></label>
+              <select multiple class="form-control" id="oxonium" formControlName="oxonium" *ngIf="oxonium|async; let oxonium">
+                <option *ngFor="let o of oxonium" [ngValue]="o">
+                  {{o.components}} ({{rounding(o.mz)}} m/z)
+                </option>
+              </select>
+            </div>
+            <div class="col-3">
+              <label for="ion-type">Fragmentation ion-type <i class="fa fa-question-circle text-primary" [ngbTooltip]="FragType"></i></label>
+              <select multiple class="form-control" id="ion-type" formControlName="ion-type">
+                <option value="b">
+                  b
+                </option>
+                <option value="y">
+                  y
+                </option>
+                <option value="Y">
+                  Y
+                </option>
+              </select>
+            </div>
+            <div class="col-3">
+              <label for="variable-bracket-format">Output Sequence Format At Variable Modifications <i class="fa fa-question-circle text-primary" [ngbTooltip]="OutFormat"></i></label>
+              <select class="form-control" id="variable-bracket-format" formControlName="variable-bracket-format">
+                <option value="windows">
+                  SWATH Windows
+                </option>
+                <option value="rt">
+                  Retention Time
+                </option>
+                <option value="windows+rt">
+                  Retention Time & SWATH Windows
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="text-right mt-4">
+            <button type="button" class="btn btn-primary" (click)="emitFormValues()">Apply Modifications</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #loading>
+  <h6 class="card-subtitle mb-2 text-muted">Loading <i class="fa fa-circle-o-notch fa-spin"></i></h6>
+</ng-template>
+
+<ng-template #emptySelection>
+  <div class="form-group col-md-4">
+    <label for="staticModsEmpty">Selected Static mods:</label>
+    <select multiple class="form-control" id="staticModsEmpty">
+      <option>None</option>
+    </select>
+  </div>
+</ng-template>
+<ng-template #StaticMod>
+  <b class="text-warning">Static Modifications</b> Modifications that will always be presented on the amino acid residues.
+</ng-template>
+<ng-template #NonYMod>
+  <b class="text-primary">Non-Ytype Variable Modifications</b> Modifications that are not always be presented. Different Modifications on the same sequence are generated at the same time. Overlapping (Conflicted) of variable modifications would be resolved by the program producing different scenarios for each of different Modifications at overlapped sites.
+</ng-template>
+<ng-template #YMod>
+  <b class="text-success">Ytype Variable Modifications</b> Modifications with multiple forms that are not always presented. Different form of the Modifications may only be generated one at a time.
+</ng-template>
+<ng-template #Retention>
+  <b>Retention Time</b> Elution time of the precursor peptides.
+</ng-template>
+<ng-template #SWATHW>
+  <b>SWATH Windows</b> SWATH selective overlapping windows for fragmentation of precursor peptides. (Customizable in Settings)
+</ng-template>
+<ng-template #MaxCharge>
+  <b>Max Charge</b> Maximum fragmentation charge to be generated by the program.
+</ng-template>
+<ng-template #PrecursorCharge>
+  <b>Precursor Charge</b> Precursor charge used for calculation of MS1 value. (Will only be used if no SWATH Windows were selected)
+</ng-template>
+<ng-template #Oxonium>
+  <b>Oxonium Ions</b> Fragments of modifications.
+</ng-template>
+<ng-template #FragType>
+  <b>Fragmentation ion-type</b> b,y, or Y. Multiple fragmentation types can be processed at the same time by stringing them together (Ex: <i>by</i> for b and y series, <i>byY</i> for b, y and Y series)
+</ng-template>
+<ng-template #OutFormat>
+  <b>Output Format</b> The content within the brackets for variable modifications within the sequence. If there are no variable modifications, a bracket containing this content would be placed at the end of the sequence.
+</ng-template>

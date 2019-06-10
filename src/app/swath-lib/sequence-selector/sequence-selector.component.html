@@ -1,0 +1,337 @@
+<div class="container-fluid">
+    <div class="card mt-1">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6">
+            <h5 class="card-title">
+              {{query.protein.id}}
+            </h5>
+          </div>
+          <div class="col-6">
+            <div class="text-right" >
+              <button class="btn btn-sm btn-outline-secondary" (click)="openProteinEditor(proteinEditor)">Edit</button>
+                      <!--ngbTooltip="Modify Query Properties" #e="ngbTooltip"-->
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-9">
+            <!--<div class="inline-seq" ngbDropdown #contextM="ngbDropdown" *ngFor="let aa of seqCoord" [ngSwitch]="aa.modType">
+              <button type="button" class="btn btn-sm btn-light mr-1 mb-1 mt-1 custom" *ngSwitchDefault placement="top" ngbTooltip="{{aa.coordinate+1}}" [id]="protein.unique_id+aa.coordinate" #t="ngbTooltip" (click)="clickEvent(t)" ngbDropdownAnchor (contextmenu)="contextClick(contextM)">{{aa.aa}}</button>
+              <button type="button" class="btn btn-sm btn-danger mr-1 mb-1 mt-1 custom" *ngSwitchCase="'conflicted'" placement="top" ngbTooltip="{{aa.coordinate+1}}" [id]="protein.unique_id+aa.coordinate" #t="ngbTooltip" (click)="clickEvent(t)" ngbDropdownAnchor (contextmenu)="contextClick(contextM)">{{aa.aa}}</button>
+              <button type="button" class="btn btn-sm btn-success mr-1 mb-1 mt-1 custom" *ngSwitchCase="'Ytype'" placement="top" ngbTooltip="{{aa.coordinate+1}}" [id]="protein.unique_id+aa.coordinate" #t="ngbTooltip" (click)="clickEvent(t)" ngbDropdownAnchor (contextmenu)="contextClick(contextM)">{{aa.aa}}</button>
+              <button type="button" class="btn btn-sm btn-primary mr-1 mb-1 mt-1 custom" *ngSwitchCase="'variable'" placement="top" ngbTooltip="{{aa.coordinate+1}}" [id]="protein.unique_id+aa.coordinate" #t="ngbTooltip" (click)="clickEvent(t)" ngbDropdownAnchor (contextmenu)="contextClick(contextM)">{{aa.aa}}</button>
+              <button type="button" class="btn btn-sm btn-warning mr-1 mb-1 mt-1 custom" *ngSwitchCase="'static'" placement="top" ngbTooltip="{{aa.coordinate+1}}" [id]="protein.unique_id+aa.coordinate" #t="ngbTooltip" (click)="clickEvent(t)" ngbDropdownAnchor (contextmenu)="contextClick(contextM)">{{aa.aa}}</button>
+              <div ngbDropdownMenu [attr.aria-labelledby]="aa.modType+aa.coordinate">
+                <button class="dropdown-item" (click)="openEditModal(coordEditor, aa.coordinate)">Edit</button>
+                <button class="dropdown-item" (click)="y_stop_at=aa.coordinate">Set y-series stop</button>
+                <button class="dropdown-item" (click)="b_stop_at=aa.coordinate">Set b-series stop</button>
+              </div>
+            </div>-->
+            <app-seq-viewer [query]="query" [maxColumn]="20" [unique_id]="query.protein.unique_id" (contextEvent)="eventHandler($event)"></app-seq-viewer>
+          </div>
+          <div class="col-3">
+            <div class="row mt-2 in-line form-inline">
+              <input type="checkbox" class="form-control form-control-sm" id="by_run" [(ngModel)]="query.by_run">
+              <label for="by_run"> <i>b,y</i>-run non-Ytype mods only</label>
+            </div>
+            <div class="row mt-2 in-line form-inline">
+              <input type="checkbox" class="form-control form-control-sm" id="oxonium_only" [(ngModel)]="query.oxonium_only">
+              <label for="oxonium_only"> Generate only for oxonium ion</label>
+            </div>
+            <div *ngIf="query.modifications.length > 0">
+              <div class="mt-2" *ngFor="let m of query.modifications">
+                <div class="row in-line" [ngSwitch]="m.type">
+                  <span class="badge badge-pill badge-success" *ngSwitchCase="'Ytype'" (click)="selectCoordinates(m.positions)">{{m.name}} {{m.Ytype}}: {{m.positions.length}}</span>
+                  <span class="badge badge-pill badge-primary" *ngSwitchCase="'variable'" (click)="selectCoordinates(m.positions)">{{m.name}} {{m.Ytype}}: {{m.positions.length}}</span>
+                  <span class="badge badge-pill badge-warning" *ngSwitchCase="'static'" (click)="selectCoordinates(m.positions)">{{m.name}} {{m.Ytype}}: {{m.positions.length}}</span>
+                </div>
+                <div class="row mt-2 in-line form-inline" *ngIf="m.type=='Ytype'||m.type=='variable'">
+                  <input type="checkbox" class="form-control form-control-sm" id="status-filled-{{query.protein.id+m.label}}" #statusfilled (change)="changeStatus(statusfilled, m)" [checked]="m.status">
+                  <label for="status-filled-{{query.protein.id+m.label}}">Filled all positions</label>
+                </div>
+                <div class="row mt-2 in-line form-inline" *ngIf="m.type=='Ytype'||m.type=='variable'">
+                  <input type="checkbox" class="form-control form-control-sm" id="mp-{{query.protein.id+m.label}}" #mp (change)="changePattern(mp, m)" [checked]="m.multiple_pattern">
+                  <label for="mp-{{query.protein.id+m.label}}">Multiple Pattern</label>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="extraForm.value['oxonium']">
+              <div *ngIf="extraForm.value['oxonium'].length > 0">
+                Selected oxonium ions:
+                <ul>
+                  <li *ngFor="let o of extraForm.value['oxonium']">{{o.components}}</li>
+                </ul>
+              </div>
+            </div>
+              <div class="row" *ngIf="query.b_stop_at>-1">
+                  <small>
+                      b-series stopping at {{query.seqCoord[query.b_stop_at].aa}}{{query.b_stop_at+1}}
+                  </small>
+                  <i class="fa fa-times-circle" (click)="query.b_stop_at=-1"></i>
+              </div>
+              <div class="row" *ngIf="query.b_selected.length > 0">
+                  <small>
+                      Selected for b-series: <span *ngFor="let s of query.b_selected">{{s+1}},</span>
+                  </small>
+              </div>
+              <div class="row" *ngIf="query.y_stop_at>-1">
+                  <small>
+                      y-series stopping at {{query.seqCoord[query.y_stop_at].aa}}{{query.y_stop_at+1}}
+                  </small>
+                  <i class="fa fa-times-circle" (click)="query.y_stop_at=-1"></i>
+              </div>
+              <div class="row" *ngIf="query.y_selected.length > 0">
+                  <small>
+                      Selected for y-series: <span *ngFor="let s of query.y_selected">{{query.seqCoord.length - s}},</span>
+                  </small>
+              </div>
+            <div class="text-right mt-4">
+              <input type="text" class="form-control form-control-sm" aria-label="ion-type" aria-describedby="ion-type" [(ngModel)]="query.protein.ion_type" placeholder="Ion Type">
+            </div>
+            <div class="text-right mt-4">
+              <button type="button" class="btn btn-sm btn-warning" (click)="query.clearModifications()">Clear All Modifications</button>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4" *ngIf="sent">
+          <ngb-progressbar [type]="progressStage" [animated]="true" [striped]="true" [value]="progress"></ngb-progressbar>
+        </div>
+      </div>
+    </div>
+</div>
+
+<ng-template #coordEditor let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Modification Editor</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="query.currentCoord">
+      <div class="container">
+        <div class="card">
+          <div class="card-header">
+            Summary
+          </div>
+          <div class="card-body">
+            <div class="card-text">
+              <strong>Position:</strong> {{query.currentCoord.coordinate + 1}}
+              <br/>
+              <strong>Residue:</strong> {{query.currentCoord.aa}}
+            </div>
+          </div>
+        </div>
+        <div class="mt-2">
+          <div *ngFor="let m of query.currentCoord.mods">
+            <div class="card mt-1">
+              <div class="card-body">
+                <h5 class="card-title">
+                  {{m.name}}
+                </h5>
+                <div class="card-text">
+                  Mass: {{m.mass}}
+                  <br/>
+                  Modification type: {{m.type}}
+                  <br/>
+                  Regex pattern: {{m.regex}}
+                  <br/>
+                  Internal label: {{m.label}}
+                  <br/>
+                  Fulfillment status: {{m.status}}
+                  <div *ngIf="m.Ytype!=''">
+                    Y-ion type: {{m.Ytype}}
+                  </div>
+                </div>
+                <div class="text-right">
+                  <button type="button" class="btn btn-primary" (click)="query.removeModification(m)">Remove</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-2">
+          <button type="button" class="btn btn-outline-primary btn-lg btn-block" (click)="createFormPremade(); createForm(query.currentCoord.coordinate, query.currentCoord.aa);">+</button>
+          <div class="card mt-2" *ngIf="addModForm">
+            <div class="card-body">
+              <form [formGroup]="preMadeForm">
+                <div>
+                  <label for="staticMGen">Static Modifications:</label>
+                  <select multiple class="form-control" id="staticMGen" *ngIf="staticMods|async; let Mods" formControlName="static">
+                    <option *ngFor="let m of Mods" [value]="m">
+                      {{m.name}}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label for="variableMGen">Non-Ytype Variable Modifications:</label>
+                  <select multiple class="form-control" id="variableMGen" *ngIf="variableMods|async; let Mods" formControlName="variable">
+                    <option *ngFor="let m of Mods" [value]="m">
+                      {{m.name}}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label for="yMGen">Ytype Variable Modifications:</label>
+                  <select multiple class="form-control" id="yMGen" *ngIf="Ymods|async; let Mods" formControlName="ytype">
+                    <option *ngFor="let m of Mods" [value]="m">
+                      {{m.name}} ({{m.Ytype}})
+                    </option>
+                  </select>
+                </div>
+                <div class="text-right mt-2">
+                  <button class="btn btn-primary" (click)="addToCurrent('premade')">Add Modification</button>
+                </div>
+              </form>
+              <div class="text-center"><h5>OR</h5></div>
+              <form [formGroup]="addModForm">
+                <div class="form-group row">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="name">Name</span>
+                    </div>
+                    <input formControlName="name" type="text" class="form-control" aria-label="name" aria-describedby="name">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="mass">Mass</span>
+                    </div>
+                    <input formControlName="mass" type="text" class="form-control" aria-label="mass" aria-describedby="mass">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text" id="type">Modification type</span>
+                      </div>
+                    <select formControlName="type" class="form-control" aria-label="type" aria-describedby="type">
+                      <option value="static">Static</option>
+                      <option value="variable">Variable</option>
+                      <option value="Ytype">Y-type</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text" id="Ytype">Y ion-label</span>
+                      </div>
+
+                    <input formControlName="Ytype" class="form-control" aria-label="Ytype" aria-describedby="Ytype">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="label">Internal Modification Label</span>
+                    </div>
+                    <input formControlName="label" class="form-control" aria-label="label" aria-describedby="label">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="regex">Regex</span>
+                    </div>
+                    <input formControlName="regex" type="text" class="form-control" aria-label="regex" aria-describedby="regex">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="status">Status</span>
+                    </div>
+                    <select formControlName="status" class="form-control" aria-label="status" aria-describedby="status">
+                      <option value=false>False</option>
+                      <option value=true>True</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text" id="multiple-pattern">Multiple Pattern</span>
+                      </div>
+
+                    <select formControlName="multiple_pattern" class="form-control" aria-label="multiple-pattern" aria-describedby="multiple-pattern">
+                      <option value=false>False</option>
+                      <option value=true>True</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text" id="auto-allocation">Auto Allocation</span>
+                      </div>
+
+                    <input formControlName="auto_allocation" type="text" class="form-control" aria-label="auto-allocation" aria-describedby="auto-allocation">
+                  </div>
+                </div>
+                <div class="text-right mt-2">
+                  <button class="btn btn-primary" (click)="addToCurrent('custom')">Add Custom Modification</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</ng-template>
+
+<ng-template #proteinEditor let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Query Editor</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="extraForm">
+      <div class="form-group">
+        <label for="protein-name">Protein Name:</label>
+        <input type="text" id="protein-name" class="form-control" formControlName="name">
+      </div>
+      <div class="form-group">
+        <label for="oxonium">Oxonium Ions:</label>
+        <select multiple class="form-control" id="oxonium" formControlName="oxonium" *ngIf="oxonium|async; let oxonium">
+          <option *ngFor="let o of oxonium" [value]="o">
+            {{o.components}} ({{o.mz}} m/z)
+          </option>
+        </select>
+        <small class="text-muted">Current selection:<span *ngFor="let i of query.oxonium"> {{i.components}},</span></small>
+      </div>
+      <div class="form-group">
+        <label for="windows">SWATH Windows:</label>
+        <select multiple class="form-control" id="windows" formControlName="windows" *ngIf="windows|async; let windows">
+          <option *ngFor="let w of windows" [value]="w">
+            {{w.start}} - {{w.stop}}
+          </option>
+        </select>
+        <small class="text-muted">Current selection:<span *ngFor="let i of query.windows"> {{i.start}}-{{i.stop}},</span></small>
+      </div>
+      <div class="form-group">
+        <label for="rt">Retention Time:</label>
+        <select multiple class="form-control" id="rt" formControlName="rt" *ngIf="rt|async; let rt">
+          <option *ngFor="let r of rt" [value]="r">
+            {{r}}
+          </option>
+        </select>
+        <small class="text-muted">Current selection:<span *ngFor="let i of query.rt"> {{i}},</span></small>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="saveProtein()">Save</button>
+  </div>
+</ng-template>
+

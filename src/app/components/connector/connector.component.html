@@ -1,0 +1,70 @@
+<div class="container-fluid">
+  <h5>Local Servers</h5>
+  <div class="row" *ngFor="let s of localServerSettings">
+    <div class="col-7">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            Python Path
+          </div>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="s.pythonPath">
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            Port
+          </div>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="s.port">
+      </div>
+    </div>
+    <div class="col-1">
+      <button class="btn btn-outline-success" (click)="StartBackend(s)">Start</button>
+    </div>
+  </div>
+    <p class="text-muted">Python Path should have access to Tornado Web Server and Pyteomics packages</p>
+  <hr>
+    <h5>Server Connections</h5>
+    <div *ngIf="backendObs|async; let backends">
+        <div class="row mb-1" *ngFor="let u of backends">
+            <div class="col-8">
+                <div class="input-group">
+                    <input type="text" class="form-control" [(ngModel)]="u.url.url" placeholder="Server URL">
+                    <div class="input-group-append">
+                        <div class="input-group-text" *ngIf="u.url.status === false">
+                            <i class="material-icons text-danger" >error</i>
+                        </div>
+                        <div class="input-group-text" *ngIf="u.url.status === true">
+                            <i class="material-icons text-success" >check_circle</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-outline-secondary" type="button" (click)="checkUrl(u.url)">
+                    Test Connection
+                </button>
+            </div>
+            <div class="col-1">
+                <button class="btn btn-outline-danger" type="button" (click)="RemoveURL(u, backends)">
+                    -
+                </button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-3">
+                <button class="btn btn-outline-success" type="button" (click)="AddURL(backends)">+</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-3">
+                <button class="btn btn-outline-warning" type="button" (click)="SaveUrls(backends)">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

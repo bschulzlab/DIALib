@@ -1,0 +1,62 @@
+>>> g.aa {
+  rect {
+    fill: white;
+    stroke: black;
+    &.Ytype {
+      fill: green;
+    }
+    &.conflicted {
+      fill: red;
+    }
+    &.variable {
+      fill: blue;
+    }
+    &.static {
+      fill: yellow;
+    }
+  }
+
+}
+
+>>> text.aaId {
+  font-family: Verdana, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  fill: black;
+  text-anchor: middle;
+  vertical-align: middle;
+  alignment-baseline: central;
+  &.Ytype {
+    fill: white;
+  }
+  &.conflicted {
+    fill: white;
+  }
+  &.variable {
+    fill: white;
+  }
+}
+
+>>> g.top-axis {
+  & path {
+    opacity: 0
+  }
+}
+
+>>> g.left-axis {
+  & path {
+    opacity: 0
+  }
+}
+
+>>> .hidden {
+  display: none
+}
+
+>>> .show-bg .annotation-note-bg {
+  fill: fuchsia;
+  // fill-opacity: 0.05;
+  fill-opacity: 0.05;
+}
+/*>>> g.annotation-note {
+  font-size: 8pt;
+}*/

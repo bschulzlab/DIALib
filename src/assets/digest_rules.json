@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "name": "Trypsin",
+      "rules": [
+        {
+          "aa": "K",
+          "C": {
+            "except": [
+              {"aa": "P", "offset": 1}
+            ]
+          }
+        },
+        {
+          "aa": "R",
+          "C": {
+            "except": [
+              {"aa": "P", "offset": 1}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

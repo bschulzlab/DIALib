@@ -1,0 +1,59 @@
+<div class="container-fluid help">
+  <h6>Support Information and Documentation</h6>
+  <div>
+    This is a tool for generation of SWATH ion library for quantification of SWATH-MS output in PeakView.
+  </div>
+  <div>
+    Back-End Operation:
+    <ul>
+      <li>
+        Each query sequence is submitted independently to the backend for preprocessing.
+      </li>
+      <li>
+        Preprocessing:
+        <ul>
+          <li>
+            The back-end would first looks for conflict in non-Ytype variable modifications and create multiple combination of the conflicted modifications. Each conflict solution scenario would be evaluate separately.
+          </li>
+          <li>
+            If there are Ytype modifications, each sequence passed above would have each Ytype modifications considered individually.
+          </li>
+          <li>
+            A static modification dictionary and a variable modification dictionary with information of all relevant modification are prepared for each iteration.
+          </li>
+        </ul>
+      </li>
+      <li>
+        A different combination of variable modifications are generate for each variable modifications at non conflicted position.
+        <ul>
+          <li>
+            If multiple patterns option was not selected and there are more than one non-conflicted positions for any variable modifications, the amount of total modifications site of this specific variable modifications would slowly decrease in linear fashion from the N to C terminus.
+          </li>
+          <li>
+            If multiple patterns option was selected, all possible patterns would be considered for non-conflicted positions.
+          </li>
+          <li>
+            If fill all positions option was selected, the back end would assume that all non-conflicted variable modifications would be assumed to be all filled or all absent.
+          </li>
+          <li>
+            The position of each modification are used to create the unique precursor sequence with decorated modification information.
+          </li>
+        </ul>
+      </li>
+      <li>
+        For each combination generated of each iteration, the precursor sequence would be in-silico fragmented by b, y and/or Y ion series.
+        <ul>
+          <li>
+            The mass of each fragment is calculated for each charge, stopping at selected max ion charge and associated with the selected retention time and SWATH windows.
+          </li>
+        </ul>
+      </li>
+      <li>
+        If any oxonium ions is selected with Ytype modifications, for each unique combination of precursor sequence, the program would also include the appropriate oxonium ions at fragment number of max Ytype fragment number +1 progressively.
+      </li>
+    </ul>
+  </div>
+  <hr>
+  <a href="https://rawgithub.com/noatgnu/noatgnu.github.io/master/3rdpartylicenses.txt">Licenses</a> information about 3rd patry softwares used for front-end development.
+</div>
+

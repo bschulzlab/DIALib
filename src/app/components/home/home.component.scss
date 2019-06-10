@@ -1,0 +1,52 @@
+$side-width: 240px;
+
+.material-icons.server-settings {
+  vertical-align: middle;
+}
+.swcontainer {
+  padding-top: 60px;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+.sidenav {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: $side-width; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  //background-color: #111; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  overflow-y: hidden;
+  padding-top: 60px;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+/*@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}*/
+
+.content {
+  margin-left: $side-width; /* Same as the width of the sidebar */
+  padding: 0px 10px;
+}
+
+.download-popup {
+  height: 80px;
+  position: absolute;
+  width: 60vw;
+  //right: 100px;
+  bottom: 10px;
+  right: 20vw;
+  z-index: 1;
+  //padding-bottom:5.5em;
+}

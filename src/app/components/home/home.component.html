@@ -1,0 +1,74 @@
+
+  <div class="sidenav card">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="content">
+    <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">DIALib Utility</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse"
+              data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation"
+              (click)="toggleCollapsed()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="navbarSupportedContent" [ngClass]="{'collapse': collapsed, 'navbar-collapse': true}">
+        <ul class="navbar-nav mr-auto">
+          <!--<li class="nav-item active">
+            <a class="nav-link" routerLink="/" routerLinkActive="active">Home <span class="sr-only">(current)</span></a>
+          </li>-->
+          <li ngbDropdown class="nav-item d-inline-block">
+            <div ngbDropdownMenu aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" routerLink="/dialib" routerLinkActive="active">SWATH Ion Library Fabricator</a>
+            </div>
+          </li>
+        </ul>
+        <div *ngIf="annoucement|async; let announcement" class="nav-item text-light">
+          {{announcement}}
+        </div>
+        <div *ngIf="finished" class="ml-2">
+          <button type="button" class="btn btn-block btn-success" (click)="downloadFile()"><span class="material-icons server-settings">save</span></button>
+        </div>
+        <div *ngIf="serverStatus|async; let serverStatus" class="ml-2">
+          <span class="badge badge-success" *ngIf="serverStatus==true">Connected</span>
+        </div>
+        <span class="ml-2">
+          <button type='button' class="btn btn-outline-light" (click)="OpenConnectorModal()"><span class="material-icons server-settings">dns</span></button>
+        </span>
+      </div>
+    </nav>
+    <div class="card download-popup" [@openClose]="downloadPopupState" *ngIf="finished">
+      <div class="card-body">
+        <div class="card-text">
+          <div class="row">
+            <div class="col-8">
+              <p *ngIf="finishedTime">
+                Query finished on {{finishedTime|date:'full'}}
+              </p>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-block btn-success save-button" (click)="downloadFile()"><span class="material-icons server-settings">save</span> Save</button>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-block btn-danger" (click)="changeState()">Close</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="swcontainer">
+
+      <div [hidden]="!(selected==1)">
+        <app-swath-lib></app-swath-lib>
+      </div>
+      <div [hidden]="!(selected==2)">
+        <app-user-settings (rt)="updateRT($event)"></app-user-settings>
+      </div>
+      <div [hidden]="!(selected==3)">
+        <app-swath-lib-help></app-swath-lib-help>
+      </div>
+      <div [hidden]="!(selected==4)">
+        <app-query-viewer></app-query-viewer>
+      </div>
+    </div>
+  </div>

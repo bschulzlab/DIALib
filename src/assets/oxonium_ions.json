@@ -1,0 +1,59 @@
+{
+  "data": [
+    {
+      "components": "Hex-2H2O",
+      "mz": 127.0389,
+      "dependencies": ["O-Mannose", "HexNAc"]
+    },
+    {
+      "components": "HexNAc-(H2O)2-COH2",
+      "mz": 138.054955501,
+      "dependencies": ["O-Mannose","HexNAc"]
+    },
+    {
+      "components": "Hex-H2O",
+      "mz": 145.049535767,
+      "dependencies": ["O-Mannose", "HexNAc"]
+    },
+    {
+      "components": "Hex",
+      "mz": 163.060100451,
+      "dependencies": ["O-Mannose", "HexNAc"]
+    },
+    {
+      "components": "HexNAc-2H2O",
+      "mz": 168.065520184,
+      "dependencies": ["O-Mannose","HexNAc"]
+    },
+    {
+      "components": "HexNAc-H2O",
+      "mz": 186.076084868,
+      "dependencies": ["O-Mannose","HexNAc"]
+    },
+    {
+      "components": "HexNAc",
+      "mz": 204.086649552,
+      "dependencies": ["O-Mannose","HexNAc"]
+    },
+    {
+      "components": "NeuAc-H2O",
+      "mz": 274.092128855,
+      "dependencies": ["O-Mannose","HexNAc"]
+    },
+    {
+      "components": "NeuAc",
+      "mz": 292.102693539,
+      "dependencies": ["O-Mannose","HexNAc"]
+    },
+    {
+      "components": "HexHexNAc",
+      "mz": 366.139472970,
+      "dependencies": ["O-Mannose","HexNAc"]
+    },
+    {
+      "components": "NeuAcHexHexNAc",
+      "mz": 657.234889477,
+      "dependencies": ["O-Mannose","HexNAc"]
+    }
+  ]
+}

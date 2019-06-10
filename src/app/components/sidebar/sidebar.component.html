@@ -1,0 +1,60 @@
+<ngb-tabset class="nav-fill" [destroyOnHide]="false">
+  <ngb-tab title="Main">
+    <ng-template ngbTabContent>
+      <nav class="nav flex-column nav-pills">
+        <a class="nav-link" href="#" (click)="SelectSidebar(1)">Input</a>
+        <a class="nav-link" href="#" (click)="SelectSidebar(2)">Settings</a>
+        <a class="nav-link" href="#" (click)="SelectSidebar(3)">Help</a>
+      </nav>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title="Queries">
+    <ng-template ngbTabContent>
+      <div class="query-list">
+        <div class="text-center">
+          <div class="card">
+            <div class="card-body">
+              <!--<div class="text-center">
+                <small class="text-muted" *ngIf="fasta; else noSeq">{{fasta.content.length}} Seq(s)</small>
+              </div>-->
+              <div class="text-center">
+                <div class="btn-group btn-group-sm d-flex" role="group">
+                  <button type="button" class="btn btn-danger w-100" (click)="clearSelection()">Clear</button>
+                  <button type="button" class="btn btn-danger w-100" (click)="SelectAll()">Select All</button>
+                  <button type="button" class="btn btn-warning w-100" (click)="SelectQuery()">View <span class="badge badge-light">{{selected.length}}</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pagination-control">
+            <pagination-controls
+                    directionLinks="false"
+                    id="fastaContent"
+                    responsive="true"
+                    (pageChange)="page = $event">
+            </pagination-controls>
+          </div>
+
+
+        </div>
+
+        <div class="list-group sequence-list" *ngIf="fasta">
+          <a class="list-group-item list-group-item-action flex-column align-items-start py-1" *ngFor="let p of fasta.content | paginate: {id: 'fastaContent', itemsPerPage: 10, currentPage: page, maxSize: 5}" (click)="selectSeq(p)">
+            <app-query-sum
+              [protein]="p">
+            </app-query-sum>
+          </a>
+        </div>
+        <div class="card side-footer">
+          <div class="card-body text-center d-flex">
+            <button type="button" class="btn btn-success btn-sm w-100" (click)="SendQueries()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
+
+<ng-template #noSeq>
+  <small class="text-muted">0 Seq(s)</small>
+</ng-template>

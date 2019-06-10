@@ -1,18 +1,167 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+db/helper.py
+db/create.py
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/swathLib.iml
+.idea/other.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/dataSources/9ca8aefb-6084-4386-a553-7a172d5dc5b3/storage_v2/_src_/database/biosql.xsM2rQ/schema/public.abK9xQ.zip
+.idea/dataSources/9ca8aefb-6084-4386-a553-7a172d5dc5b3/storage_v2/_src_/database/biosql.xsM2rQ/schema/public.abK9xQ.meta
+.idea/dataSources/9ca8aefb-6084-4386-a553-7a172d5dc5b3/storage_v2/_src_/database/biosql.xsM2rQ.meta
+.idea/dataSources/9ca8aefb-6084-4386-a553-7a172d5dc5b3.xml
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+main.py
+main2.py
+main3.py
+mod.txt
+mod2.txt
+seq.txt
+seq2.txt
+static_mod_dict.json
+swath/helper.py
+SWATH_Windows.txt
+test.fasta
+test.json
+test2.fasta
+test2.json
+test3.json
+test4.json
+test5.fasta.txt
+test_lib.txt
+test_out.txt
+test_out2.txt
+test_out4.txt
+test_out6.txt
+test_out7.txt
+variable_mod_dict.json
+windows.txt
+test.txt
+GAS1N40GS.txt_library_oxoall_allRT_10T2min75p100processed - Ions.normalized.txt
+GAS1N40GS.txt_library_oxoall_allRT_10T2min75p100processed - Ions.rep_avg.txt
+GAS1N40GS.txt_library_oxoall_allRT_10T2min75p100processed - Ions.txt
+oxoniome_normalization.py
+test2.csv
+new_test.py
 
 # compiled output
 /dist
 /tmp
 /out-tsc
-# Only exists if Bazel was run
-/bazel-out
+/app-builds
+/release
+main.js
+src/**/*.js
+*.js.map
 
 # dependencies
 /node_modules
-
-# profiling files
-chrome-profiler-events.json
-speed-measure-plugin.json
 
 # IDEs and editors
 /.idea
@@ -29,7 +178,6 @@ speed-measure-plugin.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
 
 # misc
 /.sass-cache
@@ -37,10 +185,17 @@ speed-measure-plugin.json
 /coverage
 /libpeerconnection.log
 npm-debug.log
-yarn-error.log
 testem.log
 /typings
+package-lock.json
+
+# e2e
+/e2e/*.js
+!/e2e/protractor.conf.js
+/e2e/*.map
 
 # System Files
 .DS_Store
 Thumbs.db
+
+/backselector

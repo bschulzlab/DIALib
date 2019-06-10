@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap-css-only/css/bootstrap.min.css";
+@import "~d3-context-menu/css/d3-context-menu.css";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  //padding-bottom: 20px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}

@@ -1,0 +1,5 @@
+<h5 [@selected]="query.selected" class="mb-1">{{protein.id}}</h5>
+<p class="mb-1 text-muted Seq">{{protein.sequence}}</p>
+<div class="mt-1" *ngIf="query.sent">
+  <ngb-progressbar [type]="query.progressStage" [animated]="true" [striped]="true" [value]="query.progress"></ngb-progressbar>
+</div>
