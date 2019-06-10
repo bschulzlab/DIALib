@@ -1,6 +1,6 @@
 {
-    "appId": "me.glycoproteo.swathlib",
-  "productName": "SWATHLib",
+    "appId": "me.glycoproteo.dialib",
+  "productName": "DIALib",
   "directories": {
     "output": "release/"
   },
