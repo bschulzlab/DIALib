@@ -9,10 +9,10 @@ import { AppConfig } from '../environments/environment';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'swathLibGUI';
+  title = 'DIALibGUI';
 
   constructor(public electronService: ElectronService,
-              private translate: TranslateService) {
+    private translate: TranslateService) {
 
     translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);

@@ -1,18 +1,18 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {SwathLibHelperService} from '../../helper/swath-lib-helper.service';
-import {FastaFileService} from '../../helper/fasta-file.service';
-import {Observable, Subscription} from 'rxjs';
-import {FastaFile} from '../../helper/fasta-file';
-import {Protein} from '../../helper/protein';
-import {SwathQuery} from '../../helper/swath-query';
-import {ElectronService} from '../../providers/electron.service';
-import {AnnoucementService} from '../../helper/annoucement.service';
-import {SwathResultService} from '../../helper/swath-result.service';
-import {FileService} from '../../providers/file.service';
-import {FileHandlerService} from '../../helper/file-handler.service';
+import {SwathLibHelperService} from "../../helper/swath-lib-helper.service";
+import {FastaFileService} from "../../helper/fasta-file.service";
+import {Observable, Subscription} from "rxjs";
+import {FastaFile} from "../../helper/fasta-file";
+import {Protein} from "../../helper/protein";
+import {SwathQuery} from "../../helper/swath-query";
+import {ElectronService} from "../../providers/electron.service";
+import {AnnoucementService} from "../../helper/annoucement.service";
+import {SwathResultService} from "../../helper/swath-result.service";
+import {FileService} from "../../providers/file.service";
+import {FileHandlerService} from "../../helper/file-handler.service";
 import * as TextEncoding from 'text-encoding';
-import {DataStore} from '../../helper/data-row';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import {DataStore} from "../../helper/data-row";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-sidebar',
@@ -70,7 +70,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.fastaSub = this.fastaFile.fastaFileReader.subscribe((data) => {
       this.fasta = data;
       this.selected = [];
-    });
+    })
   }
 
   SelectSidebar(n: number) {
@@ -100,20 +100,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   selectSeq(p: Protein) {
     if (!this.helper.queryMap.has(p.unique_id)) {
-      const query = this.helper.createQuery(p, [], this.helper.form.value.windows, this.helper.form.value.rt,
+      const query = this.helper.createQuery(p, [], this.helper.form.value['windows'], this.helper.form.value['rt'],
           this.helper.form.value['extra-mass'], this.helper.form.value['max-charge'], this.helper.form.value['precursor-charge'],
-          -1, -1, this.helper.form.value['variable-bracket-format'], // this.extraForm.value['oxonium'],
-          this.helper.form.value.oxonium, null, false, false, [], [], this.helper.form
+          -1, -1, this.helper.form.value['variable-bracket-format'], //this.extraForm.value['oxonium'],
+          this.helper.form.value['oxonium'], null, false, false, [], [], this.helper.form
       );
-      console.log('Update query of ' + p.unique_id);
+      console.log("Update query of " + p.unique_id);
       this.helper.queryMap.set(p.unique_id, query);
     }
     switch (this.helper.queryMap.get(p.unique_id).selected) {
-      case 'select':
-        this.helper.queryMap.get(p.unique_id).selected = 'unselect';
+      case "select":
+        this.helper.queryMap.get(p.unique_id).selected = "unselect";
         break;
-      case 'unselect':
-        this.helper.queryMap.get(p.unique_id).selected = 'select';
+      case "unselect":
+        this.helper.queryMap.get(p.unique_id).selected = "select";
         break;
     }
     const ind = this.selected.indexOf(this.helper.queryMap.get(p.unique_id));
@@ -131,14 +131,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.srs.resultCollection = [];
     this.anSer.Announce('Queries submitted. Waiting for processing...');
     this.srs.UpdateFinishTrigger(false);
-    // this.srs.UpdateSendTrigger(true);
+    //this.srs.UpdateSendTrigger(true);
     this.acceptedProtein = Array.from(this.helper.queryMap.values());
     for (const a of this.acceptedProtein) {
       a.progressStage = 'info';
       a.sent = false;
       a.progress = 0;
       a.sent = true;
-      console.log('Query sent for ' + a.protein.unique_id);
+      console.log("Query sent for " + a.protein.unique_id);
       a.progress = 20;
       a.progress = 40;
       this.srs.SendQuery(a).subscribe((response) => {

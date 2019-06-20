@@ -18,7 +18,7 @@ import {SwathLibHelperService} from '../helper/swath-lib-helper.service';
 import {UniprotService} from '../helper/uniprot.service';
 import {ElectronService} from '../providers/electron.service';
 import {FileService} from '../providers/file.service';
-import {DigestRule} from '../helper/digest-rule';
+import {DigestRule} from "../helper/digest-rule";
 
 @Component({
   selector: 'app-swath-lib',
@@ -85,7 +85,7 @@ export class SwathLibComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(window.location);
     this._fh.setMitmLocation(location.protocol + '//' +
       window.location.host +
-      // 'schulzlab.glycoproteo.me' +
+      //'schulzlab.glycoproteo.me' +
       '/assets/StreamSaver.js/mitm.html');
     this._fh.mitmLocation();
     this.rtSub = this.swathHelper.rtObservable.subscribe((data) => {
@@ -117,12 +117,12 @@ export class SwathLibComponent implements OnInit, AfterViewInit, OnDestroy {
 
   createForm() {
     this.form = this.fb.group({
-      static: [],
-      variable: [],
-      ytype: [],
-      rt: [],
-      windows: [],
-      oxonium: [],
+      'static': [],
+      'variable': [],
+      'ytype': [],
+      'rt': [],
+      'windows': [],
+      'oxonium': [],
       'extra-mass': 0,
       'precursor-charge': 2,
       'max-charge': 2,
@@ -352,14 +352,14 @@ export class SwathLibComponent implements OnInit, AfterViewInit, OnDestroy {
     this.currentAllBoxes = !this.currentAllBoxes;
     for (const b of Object.keys(this.digestMap)) {
       if (this.digestMap[b]) {
-        if (this.digestMap[b].accept !== this.currentAllBoxes) {
+        if (this.digestMap[b]['accept'] !== this.currentAllBoxes) {
           if (this.digestMap[b].accept) {
             this.acceptTrack --;
           } else {
             this.acceptTrack ++;
           }
         }
-        this.digestMap[b].accept = this.currentAllBoxes;
+        this.digestMap[b]['accept'] = this.currentAllBoxes;
       }
     }
   }
@@ -371,7 +371,7 @@ export class SwathLibComponent implements OnInit, AfterViewInit, OnDestroy {
         txtContent += i.ToFasta();
       }
     }
-    this._fh.saveFile(new Blob([txtContent], {type: 'text/plain;charset=utf-8;'}), this.fastaContent.name);
+    this._fh.saveFile(new Blob([txtContent], {'type': 'text/plain;charset=utf-8;'}), this.fastaContent.name);
   }
 
   fetchUniprot() {

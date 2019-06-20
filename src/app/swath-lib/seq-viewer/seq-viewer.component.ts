@@ -5,7 +5,7 @@ import {SvgAnnotationService} from '../../helper/svg-annotation.service';
 import {Observable, Subscription} from 'rxjs';
 import {SwathLibHelperService} from '../../helper/swath-lib-helper.service';
 import {SvgContextMenuService} from '../../helper/svg-context-menu.service';
-import {SwathQuery} from '../../helper/swath-query';
+import {SwathQuery} from "../../helper/swath-query";
 
 @Component({
   selector: 'app-seq-viewer',

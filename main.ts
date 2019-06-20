@@ -5,25 +5,24 @@ import * as child_process from 'child_process';
 import * as notifier from 'node-notifier';
 import * as fs from 'fs';
 
-const appID = 'me.glycoproteo.swathlib';
-const appName = 'SWATHLib';
+const appID = 'me.glycoproteo.dialib';
+const appName = 'DIALib';
 let win, serve;
-const windowCollection: BrowserWindow[] = [];
+let windowCollection: BrowserWindow[] = [];
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 let backend = [
     // new Backend('python', "9000", false, new ConnectorUrl('http://10.89.221.27:9000', false))
 ];
-const localBackend = [];
+let localBackend = [];
 function navWin(route) {
   win.webContents.send('nav', route);
 }
 
 function createSubWindow(data) {
-  console.log(data.options);
-  const win = new BrowserWindow(data.options);
-  win.loadURL(data.url);
-  windowCollection.push(win);
+    const win = new BrowserWindow(data.options);
+    win.loadURL(data.url);
+    windowCollection.push(win);
 }
 
 function createWindow() {
@@ -37,9 +36,6 @@ function createWindow() {
     y: 0,
     width: size.width,
     height: size.height,
-      webPreferences: {
-        nodeIntegration: true,
-      }
   });
 
   if (serve) {
@@ -65,7 +61,7 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
-  windowCollection.push(win);
+    windowCollection.push(win)
 }
 
 try {
@@ -85,7 +81,7 @@ try {
 
   });
 
-  app.on('quit', () => {
+  app.on("quit", () => {
       console.log('App Exiting.');
       for (const p of localBackend) {
           if (p.process) {
@@ -102,7 +98,7 @@ try {
     }
   });
 
-  ipcMain.on('backend-start', function(event, arg) {
+  ipcMain.on('backend-start', function (event, arg) {
       if (!arg.status) {
           let programPath = path.resolve(app.getAppPath(), '..', 'backend', 'main.web.py');
           if (!fs.existsSync(programPath)) {
@@ -110,30 +106,30 @@ try {
           }
 
           notifier.notify({title: 'message', message: 'starting ' + programPath});
-          arg.process = child_process.spawn(arg.pythonPath, ['-u', programPath, '-p', arg.port], {shell: true, detached: true});
+          arg.process = child_process.spawn(arg.pythonPath, ["-u", programPath, "-p", arg.port],{shell: true, detached: true});
           arg.url = 'http://localhost:' + arg.port;
           localBackend.push(arg);
           arg.process.on('close', () => {
-              notifier.notify({title: 'SWATHLib Server Status', message: 'Local server at ' + arg.port + ' has been closed.', appId: appID, appName});
+              notifier.notify({title: 'DIALib Server Status', message: 'Local server at ' + arg.port + ' has been closed.', appId: appID, appName: appName});
               event.sender.send('backend-close', arg);
           });
       }
   });
 
-  ipcMain.on('backend-update', (event, args) => {
+    ipcMain.on('backend-update', (event, args) => {
         backend = args;
         for (const i of windowCollection) {
             i.webContents.send('reply-backend-get', backend);
         }
     });
 
-  ipcMain.on('backend-get', (event, args) => {
+    ipcMain.on('backend-get', (event, args) => {
 
        event.sender.send('reply-backend-get', backend);
     });
 
-  ipcMain.on('window-open', (event, args) => {
-    createSubWindow(args);
+    ipcMain.on('window-open', (event, args) => {
+        createSubWindow(args);
     });
 
 } catch (e) {

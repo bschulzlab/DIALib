@@ -27,21 +27,21 @@ export class ElectronService {
       this.ipcRenderer = window.require('electron').ipcRenderer;
       this.webFrame = window.require('electron').webFrame;
       this.remote = window.require('electron').remote;
-      //console.log(this.ipcRenderer);
+
       this.childProcess = window.require('child_process');
       this.fs = window.require('fs');
       this.path = window.require('path');
-      this.notifier = window.require('node-notifier');
+        this.notifier = window.require('node-notifier');
     }
   }
 
   isElectron = () => {
     return window && window.process && window.process.type;
-  }
+  };
 
   notify(options) {
       options.appId = this.appID;
       options.appName = this.appName;
-      this.notifier.notify(options);
+      this.notifier.notify(options)
   }
 }

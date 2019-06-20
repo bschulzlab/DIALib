@@ -21,7 +21,7 @@ li.sequence {
   -webkit-overflow-scrolling: touch;
 }
 
->>> .modal-lg {
+/deep/ .modal-lg {
   max-width: 90%;
 }
 

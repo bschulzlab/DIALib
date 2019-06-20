@@ -1,4 +1,4 @@
->>> g.aa {
+/deep/ g.aa {
   rect {
     fill: white;
     stroke: black;
@@ -18,7 +18,7 @@
 
 }
 
->>> text.aaId {
+/deep/ text.aaId {
   font-family: Verdana, Helvetica, Arial, sans-serif;
   font-size: 12px;
   fill: black;
@@ -36,27 +36,27 @@
   }
 }
 
->>> g.top-axis {
+/deep/ g.top-axis {
   & path {
     opacity: 0
   }
 }
 
->>> g.left-axis {
+/deep/ g.left-axis {
   & path {
     opacity: 0
   }
 }
 
->>> .hidden {
+/deep/ .hidden {
   display: none
 }
 
->>> .show-bg .annotation-note-bg {
+/deep/ .show-bg .annotation-note-bg {
   fill: fuchsia;
   // fill-opacity: 0.05;
   fill-opacity: 0.05;
 }
-/*>>> g.annotation-note {
+/*/deep/ g.annotation-note {
   font-size: 8pt;
 }*/

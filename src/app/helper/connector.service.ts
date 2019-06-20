@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {ConnectorUrl} from './connector-url';
-import {ElectronService} from '../providers/electron.service';
-import {Backend} from './backend';
+import {ElectronService} from "../providers/electron.service";
+import {Backend} from "./backend";
 
 
 @Injectable({
@@ -11,7 +11,7 @@ import {Backend} from './backend';
 })
 export class ConnectorService {
   urls = [
-      new Backend('python', '9000', false, new ConnectorUrl('http://10.89.221.27:9000', false))
+      new Backend('python', "9000", false, new ConnectorUrl('http://10.89.221.27:9000', false))
   ];
   previousUrlIndex = -1;
   connectMap = new Map<string, boolean>();
@@ -21,9 +21,9 @@ export class ConnectorService {
   connectorSourceReader = this.connectorSource.asObservable();
 
     urlStatusMap: Map<string, ConnectorUrl> = new Map<string, ConnectorUrl>();
-  constructor(private http: HttpClient, public electron: ElectronService) {
+  constructor(private http: HttpClient, private electron: ElectronService) {
       this.GetBaseURL();
-      console.log(electron.ipcRenderer);
+
       this.electron.ipcRenderer.on('reply-backend-get', (event, args) => {
           this.urlStatusMap = new Map<string, ConnectorUrl>();
 
@@ -32,7 +32,7 @@ export class ConnectorService {
                   this.urlStatusMap.set(args[i].url.url, args[i].url);
               }
               for (let i = 0; i < args.length; i ++) {
-                  this.checkUrl(args[i].url);
+                  this.checkUrl(args[i].url)
               }
               this.urls = args;
               this.UpdateConnectorSource(args);
@@ -51,7 +51,7 @@ export class ConnectorService {
   }
 
   AddURL(current) {
-      current.push(new Backend('python', '9000', false, new ConnectorUrl('', false)));
+      current.push(new Backend('python', "9000", false, new ConnectorUrl('', false)));
       this.UpdateConnectorSource(current);
   }
 
@@ -74,7 +74,7 @@ export class ConnectorService {
         }*/
         this.urlStatusMap.set(u.url, u);
         this.CheckURL(u.url).subscribe((resp) => {
-            this.urlStatusMap.get(u.url).status = resp.status === 200;
+            this.urlStatusMap.get(u.url).status = resp['status'] === 200;
         }, (err) => {
             this.urlStatusMap.get(u.url).status = false;
         });
