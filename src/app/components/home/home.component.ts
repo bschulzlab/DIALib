@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   OpenConnectorModal() {
-      this.electronService.ipcRenderer.send("window-open", {options:{width: 700, height: 500, center: true, frame: true, transparent: false}, url: `file://${__dirname}/index.html#/` + 'connector'});
+      this.electronService.ipcRenderer.send("window-open", {options: {width: 700, height: 500, center: true, frame: true, transparent: false, webPreferences: {nodeIntegration: true}}, url: `file://${__dirname}/index.html#/` + 'connector'});
 /*    const BrowserWindow = this.electronService.remote.BrowserWindow;
     const win = new BrowserWindow({
       width: 700,

@@ -49,11 +49,11 @@
                 </div>
                 <div class="row mt-2 in-line form-inline" *ngIf="m.type=='Ytype'||m.type=='variable'">
                   <input type="checkbox" class="form-control form-control-sm" id="status-filled-{{query.protein.id+m.label}}" #statusfilled (change)="changeStatus(statusfilled, m)" [checked]="m.status">
-                  <label for="status-filled-{{query.protein.id+m.label}}">Filled all positions</label>
+                  <label>Filled all positions</label>
                 </div>
                 <div class="row mt-2 in-line form-inline" *ngIf="m.type=='Ytype'||m.type=='variable'">
                   <input type="checkbox" class="form-control form-control-sm" id="mp-{{query.protein.id+m.label}}" #mp (change)="changePattern(mp, m)" [checked]="m.multiple_pattern">
-                  <label for="mp-{{query.protein.id+m.label}}">Multiple Pattern</label>
+                  <label>Multiple Pattern</label>
                 </div>
               </div>
             </div>
