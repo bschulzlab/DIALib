@@ -324,7 +324,7 @@ def create_row(f, i, ion, msMap, mv, precursor_mz, query_unique, r, rec, result,
                     pattern = (tuple(f), precursor_seq, r, w)
                     unique_q3.add(pattern)
                 row = (w, '%.4f' % ion.mz, str(r), protein_id, "", 1, i['_protein']["_sequence"],
-                       precursor_seq, 2, ion.ion_type, ion.charge,
+                       precursor_seq, i['_precursor_charge'], ion.ion_type, ion.charge,
                        ion.fragment_number, str(r), protein_id, 0, 'FALSE', 0, 0.99, 'FALSE', 1,
                        '', '', '',
                        '',)
@@ -379,7 +379,7 @@ def create_row(f, i, ion, msMap, mv, precursor_mz, query_unique, r, rec, result,
                 pattern = (tuple(f), precursor_seq, r, '%.2f' % precursor_mz,)
                 unique_q3.add(pattern)
             row = ('%.2f' % precursor_mz, '%.4f' % ion.mz, str(r), protein_id, "", 1,
-                   i['_protein']["_sequence"], precursor_seq, 2, ion.ion_type, ion.charge,
+                   i['_protein']["_sequence"], precursor_seq, i['_precursor_charge'], ion.ion_type, ion.charge,
                    ion.fragment_number, str(r), protein_id, 0, 'FALSE', 0, 0.99, 'FALSE', 1,
                    '',
                    '', '', '')
