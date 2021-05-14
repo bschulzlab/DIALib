@@ -5,9 +5,13 @@ import re
 import copy
 from tornado import web, gen, ioloop, escape
 from tornado.options import define, options
+import asyncio
+import sys
 
 define("p", default="9000", help="Backend Listening Port")
 
+if sys.platform == 'win32':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 def prepare_libraries(sequence, **kwargs):
     kw = ("static", "variable", "Ytype")
